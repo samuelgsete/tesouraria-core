@@ -1,0 +1,2 @@
+# tesouraria-core
+tesouraria-core
