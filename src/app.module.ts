@@ -24,7 +24,7 @@ import { InventoryModule } from './inventory/inventory.module';
       host: 'motty.db.elephantsql.com',
       port: 5432,
       username: 'dwazdfbb',
-      password: 'AGPpW6JXCWdXwiomO_7yr77F6w0xwmk3s',
+      password: '165lQ7Ad9q0uOyMIPXGLv7Y-mZnfMfV_',
       database: 'dwazdfbb',
       entities: [
         Treasury, 

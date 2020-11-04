@@ -3692,7 +3692,7 @@
         "affectsGlobalScope": false
       },
       "../src/app.module.ts": {
-        "version": "6c5375213291e1b671d4e3d048175135687a96b210560dba215a71f883965168",
+        "version": "489661a8d6267852a5a09fc42db6a32f1bb44c8001972a5000326087b5013655",
         "signature": "9fc7f7b6ad854404973b8cba8e6d883f758237991968e9a3965d716d46f1da88",
         "affectsGlobalScope": false
       },
@@ -18049,6 +18049,7 @@
       "../node_modules/typescript/lib/lib.scripthost.d.ts",
       "../node_modules/typescript/lib/lib.webworker.importscripts.d.ts",
       "../src/app.controller.ts",
+      "../src/app.module.ts",
       "../src/app.service.ts",
       "../src/auth/auth.module.ts",
       "../src/auth/auth.service.ts",
@@ -18063,6 +18064,7 @@
       "../src/inventory/inventory.controller.ts",
       "../src/inventory/inventory.module.ts",
       "../src/inventory/inventory.service.ts",
+      "../src/main.ts",
       "../src/report/report.controller.ts",
       "../src/report/report.module.ts",
       "../src/report/report.service.ts",
