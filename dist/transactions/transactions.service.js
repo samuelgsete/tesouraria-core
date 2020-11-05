@@ -36,7 +36,21 @@ let TransactionsService = (() => {
             const { filteredRecipes, filteredExpenses } = this.filterTransactions(transactionsFilter, treasury.recipes, treasury.expenses);
             const recipes = filteredRecipes;
             const expenses = filteredExpenses;
-            return { recipes, expenses };
+            return this.sortTransactions(recipes, expenses);
+            ;
+        }
+        sortTransactions(recipes, expenses) {
+            const unsorted = [...recipes, ...expenses];
+            const transactions = unsorted.sort((t1, t2) => {
+                if (t1.registeredIn > t2.registeredIn) {
+                    return 1;
+                }
+                if (t1.registeredIn < t2.registeredIn) {
+                    return -1;
+                }
+                return 0;
+            });
+            return transactions;
         }
         async createRecipe(treasuryId, userId, recipe) {
             const treasury = await this.validateUser(treasuryId, userId);

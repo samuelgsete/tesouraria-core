@@ -5,10 +5,7 @@ import { Expense } from 'src/shared/models/expense.entity';
 export declare class TransactionsController {
     private readonly transactionsService;
     constructor(transactionsService: TransactionsService);
-    findAll(treasuryId: number, request: Request, year: number, month: number, type: string): Promise<{
-        recipes: any[];
-        expenses: any[];
-    }>;
+    findAll(treasuryId: number, request: Request, year: number, month: number, type: string): Promise<(Recipe | Expense)[]>;
     saveRecipe(treasuryId: number, request: Request, recipe: Recipe): Promise<void>;
     updateRecipe(treasuryId: number, request: Request, recipe: Recipe): Promise<void>;
     deleteRecipe(treasuryId: number, request: Request, id: number): Promise<{

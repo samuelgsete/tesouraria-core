@@ -8,7 +8,5 @@ export declare class AuthService {
     validateUser(username: string, pass: string): Promise<any>;
     login(user: User): Promise<{
         access_token: string;
-        name_user: string;
-        user_id: number;
     }>;
 }

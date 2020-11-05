@@ -8,10 +8,8 @@ export declare class TransactionsService {
     private readonly repositoryRecipe;
     private readonly repositoryExpense;
     constructor(repositoryTreasury: Repository<Treasury>, repositoryRecipe: Repository<Recipe>, repositoryExpense: Repository<Expense>);
-    findAll(treasuryId: number, userId: number, transactionsFilter: TransactionsFilter): Promise<{
-        recipes: any[];
-        expenses: any[];
-    }>;
+    findAll(treasuryId: number, userId: number, transactionsFilter: TransactionsFilter): Promise<(Recipe | Expense)[]>;
+    private sortTransactions;
     createRecipe(treasuryId: number, userId: number, recipe: Recipe): Promise<void>;
     updateRecipe(treasuryId: number, userId: number, recipeUpdated: Recipe): Promise<void>;
     deleteRecipe(treasuryId: number, userId: number, recipeId: number): Promise<{

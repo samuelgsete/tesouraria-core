@@ -36,9 +36,7 @@ let AuthService = (() => {
         async login(user) {
             const payload = { username: user.username, name: user.name, user: true, userid: user.id };
             return {
-                access_token: this.jwtService.sign(payload),
-                name_user: user.name,
-                user_id: user.id
+                access_token: this.jwtService.sign(payload)
             };
         }
     };
