@@ -31,6 +31,8 @@ let Expense = (() => {
         __metadata("design:type", String)
     ], Expense.prototype, "description", void 0);
     __decorate([
+        class_validator_1.Min(0, { message: `${expenses_messages_1.expenses.valueMin}` }),
+        class_validator_1.Max(100000, { message: `${expenses_messages_1.expenses.valueMax}` }),
         class_validator_1.IsNotEmpty({ message: `${expenses_messages_1.expenses.valueNotNull}` }),
         class_validator_1.IsNumber({}, { message: `${expenses_messages_1.expenses.valueValid}` }),
         typeorm_1.Column({ type: 'float', unique: false, nullable: false }),
@@ -44,7 +46,7 @@ let Expense = (() => {
     ], Expense.prototype, "registeredIn", void 0);
     __decorate([
         class_validator_1.IsOptional(),
-        class_validator_1.Length(3, 255, { message: `${expenses_messages_1.expenses.detailsLength}` }),
+        class_validator_1.Length(4, 255, { message: `${expenses_messages_1.expenses.detailsLength}` }),
         class_validator_1.IsString({ message: `${expenses_messages_1.expenses.detailsValid}` }),
         typeorm_1.Column({ length: 255, unique: false, nullable: true }),
         __metadata("design:type", String)

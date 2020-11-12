@@ -9,8 +9,10 @@ let treasuries = (() => {
     treasuries.nameValid = 'O nome deve ser uma cadeia de caracteres';
     treasuries.initialAmountNotNull = 'O montante inicial não pode ser nulo';
     treasuries.initialAmountValid = 'O montante inicial deve ser numérico';
+    treasuries.initialAmountMax = 'O montante inicial dever no máximo R$ 100000';
+    treasuries.initialAmountMin = 'O montante inicial não pode ser negativo';
     treasuries.detailsValid = 'Os detalhes devem ser uma cadeia de caracteres';
-    treasuries.detailsLength = 'Os detalhes devem conter no mínimo 3 e no máximo 255 caractares';
+    treasuries.detailsLength = 'Os detalhes devem conter no mínimo 4 e no máximo 255 caractares';
     return treasuries;
 })();
 exports.treasuries = treasuries;

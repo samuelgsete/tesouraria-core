@@ -80,6 +80,8 @@ let TreasuryService = (() => {
             if (treasury.id == null || treasury.id <= 0) {
                 throw new Id_invalid_exception_1.IdInvalidException("O id informado é invalído");
             }
+            let outdatedTreasury = await this.repository.findOne({ where: { id: treasury.id } });
+            treasury.currentBalance = treasury.currentBalance + (treasury.initialAmount - outdatedTreasury.initialAmount);
             await this.repository.save(treasury);
         }
         async delete(id, userId) {

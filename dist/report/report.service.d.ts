@@ -9,4 +9,5 @@ export declare class ReportService {
     private getReportYearly;
     private getTransactionsByMonth;
     private getIncome;
+    private sortTransactions;
 }

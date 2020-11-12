@@ -31,11 +31,11 @@ let AppModule = (() => {
             imports: [
                 typeorm_1.TypeOrmModule.forRoot({
                     type: 'postgres',
-                    host: 'motty.db.elephantsql.com',
+                    host: 'localhost',
                     port: 5432,
-                    username: 'dwazdfbb',
-                    password: '165lQ7Ad9q0uOyMIPXGLv7Y-mZnfMfV_',
-                    database: 'dwazdfbb',
+                    username: 'postgres',
+                    password: 'postgres',
+                    database: 'treasurydb',
                     entities: [
                         treasury_entity_1.Treasury,
                         expense_entity_1.Expense,

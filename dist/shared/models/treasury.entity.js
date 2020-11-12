@@ -33,6 +33,8 @@ let Treasury = (() => {
         __metadata("design:type", String)
     ], Treasury.prototype, "name", void 0);
     __decorate([
+        class_validator_1.Min(0, { message: `${treasuries_messages_1.treasuries.initialAmountMin}` }),
+        class_validator_1.Max(100000, { message: `${treasuries_messages_1.treasuries.initialAmountMax}` }),
         class_validator_1.IsNotEmpty({ message: `${treasuries_messages_1.treasuries.initialAmountNotNull}` }),
         class_validator_1.IsNumber({}, { message: `${treasuries_messages_1.treasuries.initialAmountValid}` }),
         typeorm_1.Column({ type: 'float', unique: false, nullable: false }),
@@ -52,7 +54,7 @@ let Treasury = (() => {
     ], Treasury.prototype, "incomeExpenses", void 0);
     __decorate([
         class_validator_1.IsOptional(),
-        class_validator_1.Length(3, 255, { message: `${treasuries_messages_1.treasuries.detailsLength}` }),
+        class_validator_1.Length(4, 255, { message: `${treasuries_messages_1.treasuries.detailsLength}` }),
         class_validator_1.IsString({ message: `${treasuries_messages_1.treasuries.detailsValid}` }),
         typeorm_1.Column({ length: 255, unique: false, nullable: true }),
         __metadata("design:type", String)

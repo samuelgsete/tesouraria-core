@@ -17,7 +17,6 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const ejs = require("ejs");
-const moment = require("moment");
 const treasury_entity_1 = require("../shared/models/treasury.entity");
 const recipe_entity_1 = require("../shared/models/recipe.entity");
 const expense_entity_1 = require("../shared/models/expense.entity");
@@ -25,12 +24,27 @@ const Id_invalid_exception_1 = require("../shared/exceptions/models/Id-invalid.e
 const treasury_not_foud_exception_1 = require("../shared/exceptions/models/treasury-not-foud.exception");
 const permission_denied_excepton_1 = require("../shared/exceptions/models/permission-denied.excepton");
 const ALL_MONTHS = 12;
+const MONTHS = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outrubo',
+    'Novembro',
+    'Dezembro'
+];
 let ReportService = (() => {
     let ReportService = class ReportService {
         constructor(repositoryTreasury) {
             this.repositoryTreasury = repositoryTreasury;
         }
         async getReport(treasuryId, userId, year, month) {
+            const reports = [];
             if (treasuryId <= 0 || userId <= 0) {
                 throw new Id_invalid_exception_1.IdInvalidException("O id informado é invalído");
             }
@@ -45,25 +59,12 @@ let ReportService = (() => {
                 return this.getReportYearly(year, treasury.recipes, treasury.expenses);
             }
             const report = this.getReportMonthly(year, month, treasury.recipes, treasury.expenses);
-            return report;
+            reports.push(report);
+            return reports;
         }
         async downloadReport(treasuryId, userId, year, month) {
             const options = { format: 'A4', orientation: 'landscape' };
             let document = '';
-            const months = [
-                'Janeiro',
-                'Fevereiro',
-                'Março',
-                'Abril',
-                'Maio',
-                'Junho',
-                'Julho',
-                'Agosto',
-                'Setembro',
-                'Outrubo',
-                'Novembro',
-                'Dezembro'
-            ];
             if (treasuryId <= 0 || userId <= 0) {
                 throw new Id_invalid_exception_1.IdInvalidException("O id informado é invalído");
             }
@@ -80,9 +81,15 @@ let ReportService = (() => {
                 incomeRecipes: treasury.incomeRecipes,
                 incomeExpenses: treasury.incomeExpenses
             };
+            const dateFormat = (date) => {
+                const day = date.getDate();
+                const month = date.getMonth();
+                const year = date.getFullYear();
+                return `${day} de ${MONTHS[month]} de ${year}`;
+            };
             if (month == ALL_MONTHS) {
                 const annualReport = this.getReportYearly(year, treasury.recipes, treasury.expenses);
-                ejs.renderFile('src/report/annual-report-template.ejs', { moment: moment, income: income, annualReport: annualReport, year: year, months: months }, (err, html) => {
+                ejs.renderFile('src/report/annual-report-template.ejs', { dateFormat: dateFormat, income: income, annualReport: annualReport, year: year, months: MONTHS }, (err, html) => {
                     if (err) {
                         throw new Error('Não foi possivel renderizar o documento');
                     }
@@ -93,8 +100,8 @@ let ReportService = (() => {
                 return document;
             }
             const report = this.getReportMonthly(year, month, treasury.recipes, treasury.expenses);
-            const monthSelected = months[month];
-            ejs.renderFile('src/report/report-template.ejs', { moment: moment, income: income, report: report, year: year, month: monthSelected }, (err, html) => {
+            const monthSelected = MONTHS[month];
+            ejs.renderFile('src/report/report-template.ejs', { dateFormat: dateFormat, income: income, report: report, year: year, month: monthSelected }, (err, html) => {
                 if (err) {
                     throw new Error('Não foi possivel renderizar o documento');
                 }
@@ -110,8 +117,8 @@ let ReportService = (() => {
             const incomeRecipesMonthly = incomeMontly.incomeRecipes;
             const incomeExpensesMonthly = incomeMontly.incomeExpenses;
             const balanceMonthly = incomeRecipesMonthly - incomeExpensesMonthly;
-            recipes = transactions.recipes;
-            expenses = transactions.expenses;
+            recipes = this.sortTransactions(transactions.recipes);
+            expenses = this.sortTransactions(transactions.expenses);
             return {
                 recipes,
                 expenses,
@@ -146,6 +153,19 @@ let ReportService = (() => {
                 incomeExpenses += expense.value;
             });
             return { incomeRecipes, incomeExpenses };
+        }
+        sortTransactions(transactions) {
+            const sortedTransactions = transactions.sort((t1, t2) => {
+                if (t1.registeredIn > t2.registeredIn) {
+                    return 1;
+                }
+                if (t1.registeredIn < t2.registeredIn) {
+                    return -1;
+                }
+                return 0;
+            });
+            return sortedTransactions;
+            ;
         }
     };
     ReportService = __decorate([

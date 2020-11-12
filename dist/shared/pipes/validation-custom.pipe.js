@@ -19,6 +19,7 @@ let ValidationPipe = (() => {
             }
             const object = class_transformer_1.plainToClass(metatype, value);
             const errors = await class_validator_1.validate(object);
+            console.log(errors);
             if (errors.length > 0) {
                 throw new validation_exception_1.ValidationException('Houve um erro de validação', common_1.HttpStatus.BAD_REQUEST, errors);
             }

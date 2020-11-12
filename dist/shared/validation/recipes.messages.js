@@ -9,6 +9,8 @@ let recipes = (() => {
     recipes.descriptionValid = 'A descrição deve ser uma cadeia de caracteres válida';
     recipes.valueNotNull = 'O valor não pode ser nulo';
     recipes.valueValid = 'O valor deve ser válido';
+    recipes.valueMax = 'O valor dever no máximo R$ 100000';
+    recipes.valueMin = 'O valor não pode ser negativo';
     recipes.offererValid = 'O nome do ofertante deve ser válido';
     recipes.offererLength = 'O nome do ofertante deve conter no mínimo 2 e no máximo 60 caracteres';
     recipes.typeNotNull = 'O tipo de transação é obrigatório';

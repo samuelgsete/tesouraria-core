@@ -37,7 +37,6 @@ let TransactionsService = (() => {
             const recipes = filteredRecipes;
             const expenses = filteredExpenses;
             return this.sortTransactions(recipes, expenses);
-            ;
         }
         sortTransactions(recipes, expenses) {
             const unsorted = [...recipes, ...expenses];

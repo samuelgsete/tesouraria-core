@@ -3,7 +3,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
 import * as ejs from 'ejs';
-import * as moment from 'moment';
 
 import { Treasury } from "src/shared/models/treasury.entity";
 import { Recipe } from "src/shared/models/recipe.entity";
@@ -13,6 +12,20 @@ import { TreasuryNotFoundException } from "src/shared/exceptions/models/treasury
 import { PermissionDeniedException } from "src/shared/exceptions/models/permission-denied.excepton";
 
 const ALL_MONTHS = 12;
+const MONTHS = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril', 
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outrubo', 
+    'Novembro',
+    'Dezembro'
+];
 
 @Injectable()
 export class ReportService {
@@ -20,6 +33,8 @@ export class ReportService {
     public constructor(@InjectRepository(Treasury) private readonly repositoryTreasury: Repository<Treasury>) {}
 
     public async getReport(treasuryId: number, userId: number, year: number, month: number): Promise<any> {
+        const reports = [];
+
         if(treasuryId <= 0 || userId <= 0) {
             throw new IdInvalidException("O id informado é invalído");
         }
@@ -39,27 +54,14 @@ export class ReportService {
         }
 
         const report = this.getReportMonthly(year, month, treasury.recipes, treasury.expenses);
-        return report;
+        reports.push(report);
+        return reports;
     }
 
     public async downloadReport(treasuryId: number, userId: number, year: number, month: number) {
         const  options =  { format: 'A4', orientation: 'landscape' };
         let document = '';
-        const months = [
-            'Janeiro',
-            'Fevereiro',
-            'Março',
-            'Abril', 
-            'Maio',
-            'Junho',
-            'Julho',
-            'Agosto',
-            'Setembro',
-            'Outrubo', 
-            'Novembro',
-            'Dezembro'
-        ];
-
+    
         if(treasuryId <= 0 || userId <= 0) {
             throw new IdInvalidException("O id informado é invalído");
         }
@@ -81,10 +83,17 @@ export class ReportService {
             incomeExpenses: treasury.incomeExpenses
         }
 
+        const dateFormat = (date: Date) => {
+            const day = date.getDate()
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            return `${day} de ${MONTHS[month]} de ${year}`;
+        }
+
         if(month == ALL_MONTHS) {
             const annualReport = this.getReportYearly(year, treasury.recipes, treasury.expenses);
 
-            ejs.renderFile('src/report/annual-report-template.ejs', { moment: moment,  income: income, annualReport: annualReport, year: year, months: months }, (err, html) => {
+            ejs.renderFile('src/report/annual-report-template.ejs', { dateFormat: dateFormat, income: income, annualReport: annualReport, year: year, months: MONTHS }, (err, html) => {
                 if(err) {
                     throw new Error('Não foi possivel renderizar o documento');
                 }
@@ -97,10 +106,9 @@ export class ReportService {
 
         const report = this.getReportMonthly(year, month, treasury.recipes, treasury.expenses);
        
-
-        const monthSelected = months[month];
-
-        ejs.renderFile('src/report/report-template.ejs', { moment: moment,  income: income, report: report, year: year, month: monthSelected }, (err, html) => {
+        const monthSelected = MONTHS[month];
+        
+        ejs.renderFile('src/report/report-template.ejs', { dateFormat: dateFormat, income: income, report: report, year: year, month: monthSelected }, (err, html) => {
             if(err) {
                 throw new Error('Não foi possivel renderizar o documento');
             }
@@ -111,12 +119,8 @@ export class ReportService {
         return document;  
     }
 
-
-
-
     private getReportMonthly(year: number, month: number, recipes: Recipe[], expenses: Expense[]) {
        
-
         const transactions = this.getTransactionsByMonth(year, month, recipes, expenses);
 
         const incomeMontly = this.getIncome(transactions.recipes, transactions.expenses);
@@ -126,8 +130,8 @@ export class ReportService {
 
         const balanceMonthly = incomeRecipesMonthly - incomeExpensesMonthly;
         
-        recipes = transactions.recipes;
-        expenses = transactions.expenses;
+        recipes = this.sortTransactions(transactions.recipes);
+        expenses = this.sortTransactions(transactions.expenses);
 
         return {
             recipes, 
@@ -173,5 +177,19 @@ export class ReportService {
             incomeExpenses += expense.value;
         });
         return { incomeRecipes, incomeExpenses }
+    }
+
+    private sortTransactions(transactions: any[]) {
+        const sortedTransactions = transactions.sort((t1, t2) => {
+            if (t1.registeredIn > t2.registeredIn) { 
+                return 1; 
+            }
+            if (t1.registeredIn < t2.registeredIn) { 
+                return -1; 
+            }
+            return 0;
+        });
+        return sortedTransactions;
+        ;
     }
 }

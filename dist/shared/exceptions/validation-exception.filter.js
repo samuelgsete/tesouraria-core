@@ -67,6 +67,12 @@ let ValidationExceptionFilter = (() => {
             if (constraints.isOptional) {
                 return constraints.isOptional;
             }
+            if (constraints.max) {
+                return constraints.max;
+            }
+            if (constraints.min) {
+                return constraints.min;
+            }
             return '';
         }
     };

@@ -31,6 +31,8 @@ let Recipe = (() => {
         __metadata("design:type", String)
     ], Recipe.prototype, "description", void 0);
     __decorate([
+        class_validator_1.Min(0, { message: `${recipes_messages_1.recipes.valueMin}` }),
+        class_validator_1.Max(100000, { message: `${recipes_messages_1.recipes.valueMax}` }),
         class_validator_1.IsNotEmpty({ message: `${recipes_messages_1.recipes.valueNotNull}` }),
         class_validator_1.IsNumber({}, { message: `${recipes_messages_1.recipes.valueValid}` }),
         typeorm_1.Column({ type: 'float', unique: false, nullable: false }),
@@ -59,7 +61,7 @@ let Recipe = (() => {
     ], Recipe.prototype, "registeredIn", void 0);
     __decorate([
         class_validator_1.IsOptional(),
-        class_validator_1.Length(3, 255, { message: `${recipes_messages_1.recipes.detailsLength}` }),
+        class_validator_1.Length(4, 255, { message: `${recipes_messages_1.recipes.detailsLength}` }),
         class_validator_1.IsString({ message: `${recipes_messages_1.recipes.detailsValid}` }),
         typeorm_1.Column({ length: 255, unique: false, nullable: true }),
         __metadata("design:type", String)
