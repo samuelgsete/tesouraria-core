@@ -16,7 +16,6 @@ const class_transformer_1 = require("class-transformer");
 const expense_entity_1 = require("./expense.entity");
 const recipe_entity_1 = require("./recipe.entity");
 const entity_base_entity_1 = require("./entity-base.entity");
-const inventory_entity_1 = require("./inventory.entity");
 const treasuries_messages_1 = require("../validation/treasuries.messages");
 let Treasury = (() => {
     let Treasury = class Treasury extends entity_base_entity_1.EntityBase {
@@ -81,13 +80,6 @@ let Treasury = (() => {
         typeorm_1.UpdateDateColumn(),
         __metadata("design:type", Date)
     ], Treasury.prototype, "updated", void 0);
-    __decorate([
-        class_validator_1.IsOptional(),
-        class_transformer_1.Type(() => inventory_entity_1.Inventory),
-        class_validator_1.ValidateNested(),
-        typeorm_1.OneToMany(type => inventory_entity_1.Inventory, inventory => inventory.treasury, { cascade: true }),
-        __metadata("design:type", Array)
-    ], Treasury.prototype, "inventories", void 0);
     Treasury = __decorate([
         typeorm_1.Entity(),
         __metadata("design:paramtypes", [Object])

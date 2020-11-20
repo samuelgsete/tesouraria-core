@@ -24,6 +24,7 @@ const transaction_type_enum_1 = require("../shared/models/enums/transaction-type
 const Id_invalid_exception_1 = require("../shared/exceptions/models/Id-invalid.exception");
 const treasury_not_foud_exception_1 = require("../shared/exceptions/models/treasury-not-foud.exception");
 const permission_denied_excepton_1 = require("../shared/exceptions/models/permission-denied.excepton");
+const PAGE_SIZE = 6;
 let TransactionsService = (() => {
     let TransactionsService = class TransactionsService {
         constructor(repositoryTreasury, repositoryRecipe, repositoryExpense) {
@@ -31,12 +32,18 @@ let TransactionsService = (() => {
             this.repositoryRecipe = repositoryRecipe;
             this.repositoryExpense = repositoryExpense;
         }
-        async findAll(treasuryId, userId, transactionsFilter) {
+        async findPaginate(treasuryId, userId, transactionsFilter, page) {
             const treasury = await this.validateUser(treasuryId, userId);
             const { filteredRecipes, filteredExpenses } = this.filterTransactions(transactionsFilter, treasury.recipes, treasury.expenses);
             const recipes = filteredRecipes;
             const expenses = filteredExpenses;
-            return this.sortTransactions(recipes, expenses);
+            let transactions = this.sortTransactions(recipes, expenses);
+            const count = transactions.length;
+            transactions = transactions.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+            return {
+                data: transactions,
+                count: count
+            };
         }
         sortTransactions(recipes, expenses) {
             const unsorted = [...recipes, ...expenses];

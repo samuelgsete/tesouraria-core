@@ -17,12 +17,10 @@ const user_module_1 = require("./users/user.module");
 const treasury_entity_1 = require("./shared/models/treasury.entity");
 const expense_entity_1 = require("./shared/models/expense.entity");
 const recipe_entity_1 = require("./shared/models/recipe.entity");
-const inventory_entity_1 = require("./shared/models/inventory.entity");
 const user_entity_1 = require("./shared/models/user.entity");
 const transactions_module_1 = require("./transactions/transactions.module");
 const report_module_1 = require("./report/report.module");
 const historic_module_1 = require("./historic/historic.module");
-const inventory_module_1 = require("./inventory/inventory.module");
 let AppModule = (() => {
     let AppModule = class AppModule {
     };
@@ -40,7 +38,6 @@ let AppModule = (() => {
                         treasury_entity_1.Treasury,
                         expense_entity_1.Expense,
                         recipe_entity_1.Recipe,
-                        inventory_entity_1.Inventory,
                         user_entity_1.User
                     ],
                     synchronize: true
@@ -50,8 +47,7 @@ let AppModule = (() => {
                 user_module_1.UserModule,
                 transactions_module_1.TransactionsModule,
                 report_module_1.ReportModule,
-                historic_module_1.HistoricModule,
-                inventory_module_1.InventoryModule,
+                historic_module_1.HistoricModule
             ],
             controllers: [app_controller_1.AppController],
             providers: [app_service_1.AppService],

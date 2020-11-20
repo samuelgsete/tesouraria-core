@@ -24,10 +24,10 @@ let TransactionsController = (() => {
         constructor(transactionsService) {
             this.transactionsService = transactionsService;
         }
-        findAll(treasuryId, request, year, month, type) {
+        findPaginate(treasuryId, request, year, month, type, page) {
             const userId = parseInt(request.headers['userid'].toString());
             const transactonsFilter = new transactions_filter_entity_1.TransactionsFilter({ year: year, month: month, type: type });
-            return this.transactionsService.findAll(treasuryId, userId, transactonsFilter);
+            return this.transactionsService.findPaginate(treasuryId, userId, transactonsFilter, page);
         }
         saveRecipe(treasuryId, request, recipe) {
             const userId = parseInt(request.headers['userid'].toString());
@@ -61,10 +61,11 @@ let TransactionsController = (() => {
         __param(2, common_1.Query('year')),
         __param(3, common_1.Query('month')),
         __param(4, common_1.Query('type')),
+        __param(5, common_1.Query('page')),
         __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Number, Object, Number, Number, String]),
+        __metadata("design:paramtypes", [Number, Object, Number, Number, String, Number]),
         __metadata("design:returntype", void 0)
-    ], TransactionsController.prototype, "findAll", null);
+    ], TransactionsController.prototype, "findPaginate", null);
     __decorate([
         common_1.Post('recipe/:treasuryId'),
         __param(0, common_1.Param('treasuryId')),

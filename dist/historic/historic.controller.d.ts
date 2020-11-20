@@ -6,6 +6,5 @@ export declare class HistoricController {
     getHistoricYearly(treasuryId: number, year: number, request: Request): Promise<{
         incomeYearly: any[];
         historyYearly: any[];
-        historicInventoriesYearly: any[];
     }>;
 }

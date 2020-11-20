@@ -22,8 +22,6 @@ const expense_entity_1 = require("../shared/models/expense.entity");
 const Id_invalid_exception_1 = require("../shared/exceptions/models/Id-invalid.exception");
 const treasury_not_foud_exception_1 = require("../shared/exceptions/models/treasury-not-foud.exception");
 const permission_denied_excepton_1 = require("../shared/exceptions/models/permission-denied.excepton");
-const inventory_entity_1 = require("../shared/models/inventory.entity");
-const inventory_messages_1 = require("../shared/validation/inventory.messages");
 let HistoricService = (() => {
     let HistoricService = class HistoricService {
         constructor(repositoryTreasury) {
@@ -33,7 +31,7 @@ let HistoricService = (() => {
             if (treasuryId <= 0) {
                 throw new Id_invalid_exception_1.IdInvalidException("O id informado é invalído");
             }
-            const treasury = await this.repositoryTreasury.findOne(treasuryId, { relations: ["expenses", "recipes", "inventories"] });
+            const treasury = await this.repositoryTreasury.findOne(treasuryId, { relations: ["expenses", "recipes"] });
             if (treasury == null) {
                 throw new treasury_not_foud_exception_1.TreasuryNotFoundException("Tesouraria inexistente");
             }
@@ -42,8 +40,7 @@ let HistoricService = (() => {
             }
             const incomeYearly = this.getIncomeTransactions(year, treasury.recipes, treasury.expenses);
             const historyYearly = this.getHistorcBilling(year, treasury.initialAmount, treasury.recipes, treasury.expenses);
-            const historicInventoriesYearly = this.getHistoricInventory(year, treasury.inventories);
-            return { incomeYearly, historyYearly, historicInventoriesYearly };
+            return { incomeYearly, historyYearly };
         }
         getHistorcBilling(year, initialAmount, recipes, expenses) {
             const historyYearly = [];
@@ -71,33 +68,6 @@ let HistoricService = (() => {
                 });
             }
             return incomeMontly;
-        }
-        getHistoricInventory(year, inventories) {
-            let historicInventory = [];
-            for (let month = 0; month < 12; month++) {
-                const inventory = this.getInventoryByMonth(year, month, inventories);
-                if (inventory) {
-                    historicInventory.push({
-                        currentBalance: inventory.currentBalance,
-                        actualBalance: inventory.actualBalance,
-                        discrepancy: inventory.discrepancy
-                    });
-                }
-                else {
-                    historicInventory.push({
-                        currentBalance: 0,
-                        actualBalance: 0,
-                        discrepancy: 0
-                    });
-                }
-            }
-            return historicInventory;
-        }
-        getInventoryByMonth(year, month, inventories) {
-            const result = inventories.filter(inventory => {
-                return inventory.registeredIn.getFullYear() == year && inventory.registeredIn.getMonth() == month;
-            })[0];
-            return result;
         }
         getTransactionsByMonth(year, month, recipes, expenses) {
             recipes = recipes.filter(recipe => {
