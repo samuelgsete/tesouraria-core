@@ -62,6 +62,10 @@ let TreasuryService = (() => {
                 currentBalance: treasury.currentBalance,
                 incomeRecipes: treasury.incomeRecipes,
                 incomeExpenses: treasury.incomeExpenses,
+                countSales: treasury.countSale,
+                countOffers: treasury.countOffer,
+                countContributors: treasury.countTaxpayer,
+                countOthers: treasury.countOther
             };
             return income;
         }

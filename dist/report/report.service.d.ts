@@ -6,6 +6,7 @@ export declare class ReportService {
     getReport(treasuryId: number, userId: number, year: number, month: number): Promise<any>;
     downloadReport(treasuryId: number, userId: number, year: number, month: number): Promise<string>;
     private getReportMonthly;
+    private categorizeRecipes;
     private getReportYearly;
     private getTransactionsByMonth;
     private getIncome;

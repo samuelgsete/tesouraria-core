@@ -23,6 +23,7 @@ const expense_entity_1 = require("../shared/models/expense.entity");
 const Id_invalid_exception_1 = require("../shared/exceptions/models/Id-invalid.exception");
 const treasury_not_foud_exception_1 = require("../shared/exceptions/models/treasury-not-foud.exception");
 const permission_denied_excepton_1 = require("../shared/exceptions/models/permission-denied.excepton");
+const recipe_type_enum_1 = require("../shared/models/enums/recipe-type.enum");
 const ALL_MONTHS = 12;
 const MONTHS = [
     'Janeiro',
@@ -119,12 +120,50 @@ let ReportService = (() => {
             const balanceMonthly = incomeRecipesMonthly - incomeExpensesMonthly;
             recipes = this.sortTransactions(transactions.recipes);
             expenses = this.sortTransactions(transactions.expenses);
+            const accountants = this.categorizeRecipes(recipes);
             return {
                 recipes,
                 expenses,
                 incomeRecipesMonthly,
                 incomeExpensesMonthly,
-                balanceMonthly
+                balanceMonthly,
+                accountants
+            };
+        }
+        categorizeRecipes(recipes) {
+            let countSales = 0;
+            let countOffers = 0;
+            let countContributors = 0;
+            let countOthers = 0;
+            const sales = recipes.filter(recipe => {
+                return recipe.recipeType == recipe_type_enum_1.RecipeType.SALE;
+            });
+            const offers = recipes.filter(recipe => {
+                return recipe.recipeType == recipe_type_enum_1.RecipeType.OFFER;
+            });
+            const contributors = recipes.filter(recipe => {
+                return recipe.recipeType == recipe_type_enum_1.RecipeType.TAXPAYER;
+            });
+            const others = recipes.filter(recipe => {
+                return recipe.recipeType == recipe_type_enum_1.RecipeType.OTHER;
+            });
+            sales.forEach(recipe => {
+                countSales += recipe.value;
+            });
+            offers.forEach(recipe => {
+                countOffers += recipe.value;
+            });
+            contributors.forEach(recipe => {
+                countContributors += recipe.value;
+            });
+            others.forEach(recipe => {
+                countOthers += recipe.value;
+            });
+            return {
+                countSales: countSales,
+                countOffers: countOffers,
+                countContributors: countContributors,
+                countOthers: countOthers
             };
         }
         getReportYearly(year, recipes, expenses) {

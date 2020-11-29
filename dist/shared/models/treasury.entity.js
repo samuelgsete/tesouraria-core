@@ -52,6 +52,22 @@ let Treasury = (() => {
         __metadata("design:type", Number)
     ], Treasury.prototype, "incomeExpenses", void 0);
     __decorate([
+        typeorm_1.Column({ type: 'float', unique: false, nullable: true, default: 0 }),
+        __metadata("design:type", Number)
+    ], Treasury.prototype, "countSale", void 0);
+    __decorate([
+        typeorm_1.Column({ type: 'float', unique: false, nullable: true, default: 0 }),
+        __metadata("design:type", Number)
+    ], Treasury.prototype, "countOffer", void 0);
+    __decorate([
+        typeorm_1.Column({ type: 'float', unique: false, nullable: true, default: 0 }),
+        __metadata("design:type", Number)
+    ], Treasury.prototype, "countTaxpayer", void 0);
+    __decorate([
+        typeorm_1.Column({ type: 'float', unique: false, nullable: true, default: 0 }),
+        __metadata("design:type", Number)
+    ], Treasury.prototype, "countOther", void 0);
+    __decorate([
         class_validator_1.IsOptional(),
         class_validator_1.Length(4, 255, { message: `${treasuries_messages_1.treasuries.detailsLength}` }),
         class_validator_1.IsString({ message: `${treasuries_messages_1.treasuries.detailsValid}` }),

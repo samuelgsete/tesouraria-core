@@ -16,6 +16,7 @@ const treasury_entity_1 = require("./treasury.entity");
 const entity_base_entity_1 = require("./entity-base.entity");
 const recipes_messages_1 = require("../validation/recipes.messages");
 const transaction_type_enum_1 = require("./enums/transaction-type.enum");
+const recipe_type_enum_1 = require("./enums/recipe-type.enum");
 let Recipe = (() => {
     let Recipe = class Recipe extends entity_base_entity_1.EntityBase {
         constructor(values = {}) {
@@ -53,6 +54,14 @@ let Recipe = (() => {
         }),
         __metadata("design:type", String)
     ], Recipe.prototype, "type", void 0);
+    __decorate([
+        typeorm_1.Column({
+            type: 'enum',
+            enum: ['Venda', 'Oferta do culto', 'Contribuinte', 'Outros'],
+            unique: false, nullable: true
+        }),
+        __metadata("design:type", String)
+    ], Recipe.prototype, "recipeType", void 0);
     __decorate([
         class_validator_1.IsNotEmpty({ message: `${recipes_messages_1.recipes.dateNotNull}` }),
         class_validator_1.IsDateString({ message: `${recipes_messages_1.recipes.dateValid}` }),

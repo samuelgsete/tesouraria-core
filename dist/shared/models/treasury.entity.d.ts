@@ -7,6 +7,10 @@ export declare class Treasury extends EntityBase {
     currentBalance: number;
     incomeRecipes: number;
     incomeExpenses: number;
+    countSale: number;
+    countOffer: number;
+    countTaxpayer: number;
+    countOther: number;
     details: string;
     userId: number;
     expenses: Expense[];

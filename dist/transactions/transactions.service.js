@@ -24,6 +24,7 @@ const transaction_type_enum_1 = require("../shared/models/enums/transaction-type
 const Id_invalid_exception_1 = require("../shared/exceptions/models/Id-invalid.exception");
 const treasury_not_foud_exception_1 = require("../shared/exceptions/models/treasury-not-foud.exception");
 const permission_denied_excepton_1 = require("../shared/exceptions/models/permission-denied.excepton");
+const recipe_type_enum_1 = require("../shared/models/enums/recipe-type.enum");
 const PAGE_SIZE = 6;
 let TransactionsService = (() => {
     let TransactionsService = class TransactionsService {
@@ -63,6 +64,10 @@ let TransactionsService = (() => {
             treasury.recipes.push(recipe);
             treasury.currentBalance += recipe.value;
             treasury.incomeRecipes += recipe.value;
+            treasury.countSale = recipe.recipeType == recipe_type_enum_1.RecipeType.SALE ? treasury.countSale + recipe.value : treasury.countSale;
+            treasury.countOffer = recipe.recipeType == recipe_type_enum_1.RecipeType.OFFER ? treasury.countOffer + recipe.value : treasury.countOffer;
+            treasury.countTaxpayer = recipe.recipeType == recipe_type_enum_1.RecipeType.TAXPAYER ? treasury.countTaxpayer + recipe.value : treasury.countTaxpayer;
+            treasury.countOther = recipe.recipeType == recipe_type_enum_1.RecipeType.OTHER ? treasury.countOther + recipe.value : treasury.countOther;
             await this.repositoryTreasury.save(treasury);
         }
         async updateRecipe(treasuryId, userId, recipeUpdated) {
@@ -73,6 +78,10 @@ let TransactionsService = (() => {
             const index = treasury.recipes.indexOf(currentRecipe);
             treasury.incomeRecipes += recipeUpdated.value - currentRecipe.value;
             treasury.currentBalance += recipeUpdated.value - currentRecipe.value;
+            treasury.countSale = recipeUpdated.recipeType == recipe_type_enum_1.RecipeType.SALE ? treasury.countSale + (recipeUpdated.value - currentRecipe.value) : treasury.countSale;
+            treasury.countOffer = recipeUpdated.recipeType == recipe_type_enum_1.RecipeType.OFFER ? treasury.countOffer + (recipeUpdated.value - currentRecipe.value) : treasury.countOffer;
+            treasury.countTaxpayer = recipeUpdated.recipeType == recipe_type_enum_1.RecipeType.TAXPAYER ? treasury.countTaxpayer + (recipeUpdated.value - currentRecipe.value) : treasury.countTaxpayer;
+            treasury.countOther = recipeUpdated.recipeType == recipe_type_enum_1.RecipeType.OTHER ? treasury.countOther + (recipeUpdated.value - currentRecipe.value) : treasury.countOther;
             treasury.recipes[index] = recipeUpdated;
             await this.repositoryTreasury.save(treasury);
         }
