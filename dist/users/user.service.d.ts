@@ -8,17 +8,13 @@ export declare class UserService {
     findById(id: number): Promise<User>;
     findByUserName(username: string): Promise<User | undefined>;
     findByEmail(email: string): Promise<User | undefined>;
-    save(user: User): Promise<{
-        message: string;
+    save(user: User): Promise<void>;
+    confirmUser(code: string): Promise<void>;
+    resendCode(email: string): Promise<void>;
+    update(user: User): Promise<void>;
+    recoverAccount(email: string): Promise<{
+        name: string;
     }>;
-    confirmUser(code: string): Promise<{
-        message: string;
-    }>;
-    resendCode(email: string): Promise<{
-        message: string;
-    }>;
-    update(user: User): Promise<{
-        message: string;
-    }>;
+    finalizeRecover(newUsername: string, newPassowrd: string, code: string): Promise<void>;
     private generateVerificationCode;
 }

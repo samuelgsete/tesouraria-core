@@ -54,26 +54,15 @@ let UserService = (() => {
             const code = this.generateVerificationCode();
             user.codeVerify = code;
             this.emailService.verifyUser(user.name, user.email, user.codeVerify);
-            return this.repository
-                .save(user)
-                .then(e => {
-                return {
-                    message: 'Aguardando confirmação'
-                };
-            });
+            await this.repository.save(user);
         }
         async confirmUser(code) {
             const result = await this.repository.find({ where: { codeVerify: code } });
             let user = result[0];
             if (user) {
                 user.isActive = true;
-                return this.repository
-                    .save(user)
-                    .then(e => {
-                    return {
-                        message: 'Criado com sucesso'
-                    };
-                });
+                await this.repository.save(user);
+                return;
             }
             throw new Id_invalid_exception_1.IdInvalidException('Codigo de verificação inválido');
         }
@@ -86,13 +75,7 @@ let UserService = (() => {
             const code = this.generateVerificationCode();
             user.codeVerify = code;
             this.emailService.verifyUser(user.name, user.email, user.codeVerify);
-            return this.repository
-                .save(user)
-                .then(() => {
-                return {
-                    message: 'Código reenviado'
-                };
-            });
+            await this.repository.save(user);
         }
         async update(user) {
             if (user.id == null || user.id <= 0) {
@@ -110,13 +93,29 @@ let UserService = (() => {
                     throw new is_created_exception_1.IsCreatedEception('O email já está sendo utilizado', common_1.HttpStatus.BAD_REQUEST);
                 }
             }
-            return this.repository
-                .save(user)
-                .then(e => {
-                return {
-                    message: 'Atualizado com sucesso'
-                };
-            });
+            await this.repository.save(user);
+        }
+        async recoverAccount(email) {
+            const user = await this.findByEmail(email);
+            if (user) {
+                user.codeVerify = this.generateVerificationCode();
+                this.emailService.recoverUser(user.name, user.email, user.codeVerify);
+                await this.repository.save(user);
+                return { name: user.name };
+            }
+            throw new common_1.HttpException('O email não está cadastrado', common_1.HttpStatus.BAD_REQUEST);
+        }
+        async finalizeRecover(newUsername, newPassowrd, code) {
+            const result = await this.repository.find({ where: { codeVerify: code } });
+            let user = result[0];
+            if (user) {
+                user.isActive = true;
+                user.username = newUsername;
+                user.password = newPassowrd;
+                await this.repository.save(user);
+                return;
+            }
+            throw new common_1.HttpException('Codigo de verificação inválido', common_1.HttpStatus.BAD_REQUEST);
         }
         generateVerificationCode() {
             return `${Math.floor(Math.random() * 90000) + 10000}`;

@@ -4,16 +4,12 @@ export declare class UserController {
     private service;
     constructor(service: UserService);
     findById(id: number): Promise<User>;
-    create(user: User): Promise<{
-        message: string;
+    create(user: User): Promise<void>;
+    confirmUser(code: string): Promise<void>;
+    resendCode(body: any): Promise<void>;
+    update(user: User): Promise<void>;
+    recoverAccount(body: any): Promise<{
+        name: string;
     }>;
-    confirmUser(code: string): Promise<{
-        message: string;
-    }>;
-    resendCode(body: any): Promise<{
-        message: string;
-    }>;
-    update(user: User): Promise<{
-        message: string;
-    }>;
+    finalizeRecover(body: any): Promise<void>;
 }

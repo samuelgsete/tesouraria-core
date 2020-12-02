@@ -30,7 +30,7 @@ import { HistoricModule } from './historic/historic.module';
         Recipe,
         User
       ],
-      synchronize: true
+      synchronize: false
     }),
     TreasuryModule,
     AuthModule,

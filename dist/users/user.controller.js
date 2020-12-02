@@ -37,6 +37,12 @@ let UserController = (() => {
         update(user) {
             return this.service.update(user);
         }
+        recoverAccount(body) {
+            return this.service.recoverAccount(body.email);
+        }
+        finalizeRecover(body) {
+            return this.service.finalizeRecover(body.username, body.password, body.code);
+        }
     };
     __decorate([
         common_1.Get(':id'),
@@ -75,6 +81,20 @@ let UserController = (() => {
         __metadata("design:paramtypes", [user_entity_1.User]),
         __metadata("design:returntype", void 0)
     ], UserController.prototype, "update", null);
+    __decorate([
+        common_1.Put('recover/account'),
+        __param(0, common_1.Body()),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], UserController.prototype, "recoverAccount", null);
+    __decorate([
+        common_1.Put('finalize/recover'),
+        __param(0, common_1.Body()),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], UserController.prototype, "finalizeRecover", null);
     UserController = __decorate([
         common_1.Controller('user'),
         __metadata("design:paramtypes", [user_service_1.UserService])
