@@ -14,6 +14,8 @@ export declare class UserService {
     update(user: User): Promise<void>;
     recoverAccount(email: string): Promise<{
         name: string;
+        surname: string;
+        username: string;
     }>;
     finalizeRecover(newUsername: string, newPassowrd: string, code: string): Promise<void>;
     private generateVerificationCode;

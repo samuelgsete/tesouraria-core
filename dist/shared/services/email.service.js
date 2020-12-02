@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmailService = void 0;
 const common_1 = require("@nestjs/common");
+const ejs = require("ejs");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const CLIENT_ID = '189708702352-qu5lpcs8s2099mb9n7980kevapfr0kds.apps.googleusercontent.com';
@@ -19,6 +20,26 @@ const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
 const REFRESH_TOKEN = '1//04Y6A9lpJCycxCgYIARAAGAQSNwF-L9IrzxTdgG4MSdjhXA8T3c6RJGqZnlZtmFTcSYFUWlj0g_kxdbhCD10zxpjbSMJXbQy7KDs';
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+const MONTHS = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outrubo',
+    'Novembro',
+    'Dezembro'
+];
+const dateFormat = (date) => {
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    return `${day} de ${MONTHS[month]} de ${year}`;
+};
 let EmailService = (() => {
     let EmailService = class EmailService {
         constructor() { }
@@ -59,13 +80,13 @@ let EmailService = (() => {
                 }
             });
         }
-        async verifyUser(name, recipient, code) {
+        async verifyUser(name, surname, recipient, code) {
             await this.authenticate();
             const mailOptions = {
-                from: 'Samuel de Souza Taveira - <gseteapi@gmail.com>',
+                from: 'Samuel de Souza Taveira - <samuelgsete@gmail.com>',
                 to: `${recipient}`,
                 subject: 'Cofirmação de conta',
-                html: `<p>Olá ${name}, Seja bem vindo! utilize o seguinte código para concluir seu cadastro no nosso sistema: ${code}<p>`
+                html: this.generatePageWelcome(name, surname, code)
             };
             this.transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
@@ -76,13 +97,13 @@ let EmailService = (() => {
                 }
             });
         }
-        async recoverUser(name, recipient, code) {
+        async recoverUser(name, surname, recipient, code) {
             await this.authenticate();
             const mailOptions = {
                 from: 'Samuel de Souza Taveira - <gseteapi@gmail.com>',
                 to: `${recipient}`,
                 subject: 'Recuperação de Conta',
-                html: `<p>Olá ${name}, parece que você não está conseguindo acessar sua conta. Utilize o seguinte código para recuperar seu acesso ao sistema: ${code}<p>`
+                html: this.generatePageRecover(name, surname, code)
             };
             this.transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
@@ -92,6 +113,30 @@ let EmailService = (() => {
                     console.log('Email sent: ' + info.response);
                 }
             });
+        }
+        generatePageWelcome(name, surname, code) {
+            let document = '';
+            ejs.renderFile('src/shared/services/welcome.ejs', { name: name, surname: surname, code: code, registeredIn: new Date(), dateFormat: dateFormat }, (err, html) => {
+                if (err) {
+                    throw new Error('Não foi possivel renderizar o documento');
+                }
+                else {
+                    document = html;
+                }
+            });
+            return document;
+        }
+        generatePageRecover(name, surname, code) {
+            let document = '';
+            ejs.renderFile('src/shared/services/recover.ejs', { name: name, surname: surname, code: code, registeredIn: new Date(), dateFormat: dateFormat }, (err, html) => {
+                if (err) {
+                    throw new Error('Não foi possivel renderizar o documento');
+                }
+                else {
+                    document = html;
+                }
+            });
+            return document;
         }
     };
     EmailService = __decorate([

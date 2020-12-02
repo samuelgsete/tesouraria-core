@@ -10,6 +10,8 @@ export declare class UserController {
     update(user: User): Promise<void>;
     recoverAccount(body: any): Promise<{
         name: string;
+        surname: string;
+        username: string;
     }>;
     finalizeRecover(body: any): Promise<void>;
 }
