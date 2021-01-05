@@ -27,8 +27,8 @@ let HistoricController = (() => {
         }
     };
     __decorate([
-        common_1.Get(':treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Get(':id/historic'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Query('year')),
         __param(2, common_1.Req()),
         __metadata("design:type", Function),
@@ -37,7 +37,7 @@ let HistoricController = (() => {
     ], HistoricController.prototype, "getHistoricYearly", null);
     HistoricController = __decorate([
         common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
-        common_1.Controller('historic'),
+        common_1.Controller('treasury'),
         __metadata("design:paramtypes", [historic_service_1.HistoricService])
     ], HistoricController);
     return HistoricController;

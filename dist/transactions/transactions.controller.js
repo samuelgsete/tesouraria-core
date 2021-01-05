@@ -55,8 +55,8 @@ let TransactionsController = (() => {
         }
     };
     __decorate([
-        common_1.Get(':treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Get(':id/transactions'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Query('year')),
         __param(3, common_1.Query('month')),
@@ -67,8 +67,8 @@ let TransactionsController = (() => {
         __metadata("design:returntype", void 0)
     ], TransactionsController.prototype, "findPaginate", null);
     __decorate([
-        common_1.Post('recipe/:treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Post(':id/recipe'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Body()),
         __metadata("design:type", Function),
@@ -76,8 +76,8 @@ let TransactionsController = (() => {
         __metadata("design:returntype", void 0)
     ], TransactionsController.prototype, "saveRecipe", null);
     __decorate([
-        common_1.Put('recipe/:treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Put(':id/recipe'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Body()),
         __metadata("design:type", Function),
@@ -85,8 +85,8 @@ let TransactionsController = (() => {
         __metadata("design:returntype", void 0)
     ], TransactionsController.prototype, "updateRecipe", null);
     __decorate([
-        common_1.Delete('recipe/:treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Delete(':id/recipe'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Body('id')),
         __metadata("design:type", Function),
@@ -94,8 +94,8 @@ let TransactionsController = (() => {
         __metadata("design:returntype", void 0)
     ], TransactionsController.prototype, "deleteRecipe", null);
     __decorate([
-        common_1.Post('expense/:treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Post(':id/expense'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Body()),
         __metadata("design:type", Function),
@@ -103,8 +103,8 @@ let TransactionsController = (() => {
         __metadata("design:returntype", void 0)
     ], TransactionsController.prototype, "saveExpense", null);
     __decorate([
-        common_1.Put('expense/:treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Put(':id/expense'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Body()),
         __metadata("design:type", Function),
@@ -112,8 +112,8 @@ let TransactionsController = (() => {
         __metadata("design:returntype", void 0)
     ], TransactionsController.prototype, "updateExpense", null);
     __decorate([
-        common_1.Delete('expense/:treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Delete(':id/expense'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Body('id')),
         __metadata("design:type", Function),
@@ -122,7 +122,7 @@ let TransactionsController = (() => {
     ], TransactionsController.prototype, "deleteExpense", null);
     TransactionsController = __decorate([
         common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
-        common_1.Controller('transactions'),
+        common_1.Controller('treasury'),
         __metadata("design:paramtypes", [transactions_service_1.TransactionsService])
     ], TransactionsController);
     return TransactionsController;

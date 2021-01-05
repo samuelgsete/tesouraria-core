@@ -22,6 +22,7 @@ const expense_entity_1 = require("../shared/models/expense.entity");
 const Id_invalid_exception_1 = require("../shared/exceptions/models/Id-invalid.exception");
 const treasury_not_foud_exception_1 = require("../shared/exceptions/models/treasury-not-foud.exception");
 const permission_denied_excepton_1 = require("../shared/exceptions/models/permission-denied.excepton");
+const ALL_MONTHS = 12;
 let HistoricService = (() => {
     let HistoricService = class HistoricService {
         constructor(repositoryTreasury) {
@@ -46,13 +47,13 @@ let HistoricService = (() => {
             const historyYearly = [];
             let cumulativeBilling = initialAmount;
             let monthlyBiiling = 0;
-            for (let month = 0; month < 12; month++) {
+            for (let month = 0; month < ALL_MONTHS; month++) {
                 let transactions = this.getTransactionsByMonth(year, month, recipes, expenses);
                 let { incomeRecipes, incomeExpenses } = this.getIncome(transactions.recipes, transactions.expenses);
                 cumulativeBilling += (incomeRecipes - incomeExpenses);
                 monthlyBiiling = incomeRecipes - incomeExpenses;
-                cumulativeBilling = parseInt(cumulativeBilling.toFixed(1));
-                monthlyBiiling = parseInt(monthlyBiiling.toFixed(1));
+                cumulativeBilling = parseFloat(cumulativeBilling.toFixed(2));
+                monthlyBiiling = parseFloat(monthlyBiiling.toFixed(2));
                 historyYearly.push({ cumulativeBilling, monthlyBiiling });
             }
             return historyYearly;

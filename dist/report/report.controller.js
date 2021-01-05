@@ -31,8 +31,8 @@ let ReportController = (() => {
         }
     };
     __decorate([
-        common_1.Get(':treasuryId'),
-        __param(0, common_1.Param('treasuryId')),
+        common_1.Get(':id/report'),
+        __param(0, common_1.Param('id')),
         __param(1, common_1.Req()),
         __param(2, common_1.Query('year')),
         __param(3, common_1.Query('month')),
@@ -41,7 +41,7 @@ let ReportController = (() => {
         __metadata("design:returntype", void 0)
     ], ReportController.prototype, "getReport", null);
     __decorate([
-        common_1.Get('download/:id'),
+        common_1.Get(':id/report/download'),
         __param(0, common_1.Param('id')),
         __param(1, common_1.Query('year')),
         __param(2, common_1.Query('month')),
@@ -52,7 +52,7 @@ let ReportController = (() => {
     ], ReportController.prototype, "downloadReportMonthly", null);
     ReportController = __decorate([
         common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
-        common_1.Controller('report'),
+        common_1.Controller('treasury'),
         __metadata("design:paramtypes", [report_service_1.ReportService])
     ], ReportController);
     return ReportController;
